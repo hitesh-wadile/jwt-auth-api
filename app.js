@@ -67,9 +67,9 @@ app.post('/login', async (req,res)=>{
 
         const user = await User.findOne({email})
 
-        // if(!(user)){
-        //     res.redirect('/register')
-        // }
+        if(!(user)){
+            res.redirect('/register')
+        }
 
         const passwordMatched = await bycrypt.compare(password,user.password)
         if(passwordMatched){
@@ -80,22 +80,23 @@ app.post('/login', async (req,res)=>{
                     expiresIn : "2h"
                 }
             )
+            console.log(token)
             
             user.token = token
             user.password = undefined
+            
+            
+            const options = {
+                expires : new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+                httpOnly : true
+            }
+            
+            res.status(200).cookie("token",token,options).json({
+                success : true,
+                token,
+                user
+            })
         }
-        
-
-        const options = {
-            expires : new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-            httpOnly : true
-        }
-
-        res.status(200).cookie("token",token,options).json({
-            success : true,
-            token,
-            user
-        })
     } catch (error) {
         console.log(error);
     }
