@@ -80,7 +80,6 @@ app.post('/login', async (req,res)=>{
                     expiresIn : "2h"
                 }
             )
-            console.log(token)
             
             user.token = token
             user.password = undefined
