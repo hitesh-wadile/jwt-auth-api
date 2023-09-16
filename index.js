@@ -4,5 +4,5 @@ const {PORT} = process.env
 
 
 app.listen(PORT, () => {
-    console.log(`Server running on the Port ${PORT}`);
+    console.log(`<h1>Server running on the Port ${PORT}</h1>`);
 })
